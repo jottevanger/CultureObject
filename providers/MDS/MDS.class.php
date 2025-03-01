@@ -1,4 +1,5 @@
 <?php
+include "utilities.php";
 
 class MDSException extends \CultureObject\Exception\ProviderException {
 
@@ -185,8 +186,21 @@ class MDS extends \CultureObject\Provider {
 			$import_status[] = 'Nothing to import';
 		} else {
 			foreach ( $result['data'] as $doc ) {
+				$spectrumData = [];
+				findSpectrumData($doc, $spectrumData);
 				$identifier            = $doc['@admin']['id'];
 				$doc['_cos_object_id'] = $identifier;
+
+				$on = filterArrayByKeyValue($spectrumData,"type","spectrum/object_name");
+				if($on && isset($on[0]["value"])){$doc['object_name_str'] = $on[0]["value"];}
+				$ods = filterArrayByKeyValue($spectrumData,"type","spectrum/responsible_department_section");
+				if($ods && isset($on[0]["value"])){$doc['department_section_str'] = $ods[0]["value"];}
+				$opp = filterArrayByKeyValue($spectrumData,"type","spectrum/object_production_place");
+				if($opp && isset($opp[0]["value"])){$doc['object_production_place'] = $opp[0]["value"];}
+				$dims = filterArrayByKeyValue($spectrumData,"type","spectrum/dimension");
+				if($dims){$doc['dimensions_arr'] = $dims;}
+				if($dims && isset($dims[0]["value"])){$doc['dimensions_str'] = collapseArray($dims, "; ", "value");}
+				
 				$object_exists         = $this->object_exists( $identifier );
 				if ( ! $object_exists ) {
 					$current_objects[] = $this->create_object( $identifier, $doc );
