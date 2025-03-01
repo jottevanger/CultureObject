@@ -191,15 +191,47 @@ class MDS extends \CultureObject\Provider {
 				$identifier            = $doc['@admin']['id'];
 				$doc['_cos_object_id'] = $identifier;
 
-				$on = filterArrayByKeyValue($spectrumData,"type","spectrum/object_name");
-				if($on && isset($on[0]["value"])){$doc['object_name_str'] = $on[0]["value"];}
-				$ods = filterArrayByKeyValue($spectrumData,"type","spectrum/responsible_department_section");
-				if($ods && isset($on[0]["value"])){$doc['department_section_str'] = $ods[0]["value"];}
-				$opp = filterArrayByKeyValue($spectrumData,"type","spectrum/object_production_place");
-				if($opp && isset($opp[0]["value"])){$doc['object_production_place'] = $opp[0]["value"];}
+				//object_number
+				$on = filterArrayByKeyValue($spectrumData,"type","spectrum/object_number");
+				if($on && isset($on[0]["value"])){$doc['object_number_str'] = $on[0]["value"];}
+				//title
+				$ot = filterArrayByKeyValue($spectrumData,"type","spectrum/title");
+				if($ot && isset($ot[0]["value"])){$doc['title_str'] = $ot[0]["value"];}
+				//object_name
+				$onm = filterArrayByKeyValue($spectrumData,"type","spectrum/object_name");
+				if($onm && isset($onm[0]["value"])){$doc['object_name_str'] = $onm[0]["value"];}
+				//current_reproduction_location
+				$repro = filterArrayByKeyValue($spectrumData,"type","spectrum/current_reproduction_location");
+				if($repro){$doc['reproduction_arr'] = $repro;}
+				if($repro && isset($repro[0]["value"])){$doc['reproduction_first_str'] = $repro[0]["value"];}
+				//credit_line
+				$oc = filterArrayByKeyValue($spectrumData,"type","spectrum/credit_line");
+				if($oc && isset($oc[0]["value"])){$doc['credit_line_str'] = $oc[0]["value"];}
+				//dimension
 				$dims = filterArrayByKeyValue($spectrumData,"type","spectrum/dimension");
 				if($dims){$doc['dimensions_arr'] = $dims;}
 				if($dims && isset($dims[0]["value"])){$doc['dimensions_str'] = collapseArray($dims, "; ", "value");}
+				//brief_description - we could add other descriptions
+				$desc = filterArrayByKeyValue($spectrumData,"type","spectrum/brief_description");
+				if($desc && isset($desc[0]["value"])){$doc['description_str'] = $desc[0]["value"];}
+				//subjects content_concept
+				$subjects = filterArrayByKeyValue($spectrumData,"type","spectrum/content_concept");
+				if($subjects){$doc['subjects_arr'] = $subjects;}
+				if($subjects && isset($subjects[0]["value"])){$doc['subjects_str'] = collapseArray($subjects, "; ", "value");}
+				//production date object_production_date
+				$pdate = filterArrayByKeyValue($spectrumData,"type","spectrum/object_production_date");
+				if($pdate && isset($pdate[0]["value"])){$doc['production_date_str'] = $pdate[0]["value"];}
+				//maker object_production_person
+				//materials material
+				//associated_place
+				//associated_person
+
+				//responsible_department_section
+				$ods = filterArrayByKeyValue($spectrumData,"type","spectrum/responsible_department_section");
+				if($ods && isset($on[0]["value"])){$doc['department_section_str'] = $ods[0]["value"];}
+				//object_production_place
+				$opp = filterArrayByKeyValue($spectrumData,"type","spectrum/object_production_place");
+				if($opp && isset($opp[0]["value"])){$doc['object_production_place'] = $opp[0]["value"];}
 				
 				$object_exists         = $this->object_exists( $identifier );
 				if ( ! $object_exists ) {
