@@ -194,12 +194,22 @@ class MDS extends \CultureObject\Provider {
 				//object_number
 				$on = filterArrayByKeyValue($spectrumData,"type","spectrum/object_number");
 				if($on && isset($on[0]["value"])){$doc['object_number_str'] = $on[0]["value"];}
-				//title
-				$ot = filterArrayByKeyValue($spectrumData,"type","spectrum/title");
-				if($ot && isset($ot[0]["value"])){$doc['title_str'] = $ot[0]["value"];}
+
+				//name plus title for doc name
+				$st = "";
 				//object_name
 				$onm = filterArrayByKeyValue($spectrumData,"type","spectrum/object_name");
-				if($onm && isset($onm[0]["value"])){$doc['object_name_str'] = $onm[0]["value"];}
+				if($onm && isset($onm[0]["value"])){$doc['object_name_str'] = $onm[0]["value"];$st.=$onm[0]["value"];}
+				//title
+				$ot = filterArrayByKeyValue($spectrumData,"type","spectrum/title");
+				if($ot && isset($ot[0]["value"])){
+					if($st!==""){
+						$st.=": ";
+					}
+					$st.=$onm[0]["value"];
+					$doc['title_str'] = $ot[0]["value"];$st.=$ot[0]["value"];
+				}
+				$doc['summary_title']=$st;
 				//current_reproduction_location
 				$repro = filterArrayByKeyValue($spectrumData,"type","spectrum/current_reproduction_location");
 				if($repro){$doc['reproduction_arr'] = $repro;}
@@ -333,7 +343,7 @@ class MDS extends \CultureObject\Provider {
 		}
 
 		$post    = array(
-			'post_title'  => ! empty( $doc['name'] ) ? $this->concat_values( $doc['name'] ) : '',
+			'post_title'  => ! empty( $doc['summary_title'] ) ?  $doc['summary_title']  : '',
 			'post_name'   => $identifier,
 			'post_type'   => 'object',
 			'post_status' => 'publish',
@@ -357,7 +367,7 @@ class MDS extends \CultureObject\Provider {
 		$existing_id = $this->existing_object_id( $identifier );
 		$post        = array(
 			'ID'          => $existing_id,
-			'post_title'  => ! empty( $doc['name'] ) ? $this->concat_values( $doc['name'] ) : '',
+			'post_title'  => ! empty( $doc['summary_title'] ) ? $doc['summary_title'] : '',
 			'post_name'   => $identifier,
 			'post_type'   => 'object',
 			'post_status' => 'publish',
