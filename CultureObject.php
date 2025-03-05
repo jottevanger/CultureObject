@@ -79,7 +79,7 @@ function co_augmentations_html( $post ) {
                     url: 'https://api.apilayer.com/keyword',
 					xhrFields: { withCredentials: true },
                     type: 'POST',
-					headers: {'apikey': 'uRs5cy6JUik43e4mEM9e1WtgYwujKSyM'},
+					headers: {'apikey': '##your key here##'},
                     data: { data: inputData },
                     success: function(response) {
 						alert("Cool, I got something back!\n\n");
