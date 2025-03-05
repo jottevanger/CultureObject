@@ -236,3 +236,7 @@ class CultureObject extends Core {
 		return $messages;
 	}
 }
+
+
+add_action( 'add_meta_boxes', 'co_add_custom_box' );
+add_action( 'save_post', 'co_save_postdata' );
