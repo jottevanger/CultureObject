@@ -218,7 +218,11 @@ class Settings extends Core {
 		}
 		printf( '<input type="text" name="%s" id="%s" value="%s" />', esc_attr( $field ), esc_attr( $field ), esc_attr( $value ) );
 		if ( $field == 'cos_core_sync_key' ) {
-			echo '<br /><small>' . esc_html__( 'This key forms part of the sync URL for a little bit more security.', 'culture-object' ) . '</small>';
+			echo '<br /><small>';
+			esc_html_e( 'For providers supporting cron imports, this key forms part of the sync URL for a little bit more security.', 'culture-object' );
+			echo '<br />';
+			esc_html_e( 'For other type of imports, it is automatically added to the requests.', 'culture-object' );
+			echo '</small>';
 		}
 	}
 
@@ -234,7 +238,9 @@ class Settings extends Core {
 			printf( '<input type="checkbox" name="%s" value="1" id="%s" />', esc_attr( $field ), esc_attr( $field ) );
 		}
 		if ( $field == 'cos_core_import_images' ) {
-			echo '<br /><small>' . esc_html__( 'Your provider supports automatic importing of images to the WordPress Media Library.<br />Would you like to enable this?', 'culture-object' ) . '</small>';
+			echo '<br /><small>';
+			esc_html_e( 'Your provider supports automatic importing of images to the WordPress Media Library. Check to enable.', 'culture-object' );
+			echo '</small>';
 		}
 	}
 }
